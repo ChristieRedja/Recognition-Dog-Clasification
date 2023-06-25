@@ -6,6 +6,7 @@ import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import keras
+import streamlit as st
 from PIL import Image
 
 from keras.layers import Dense
@@ -47,9 +48,8 @@ train_datagen = ImageDataGenerator(rescale=1./255)
 val_datagen = ImageDataGenerator(rescale=1./255)
 test_datagen = ImageDataGenerator(rescale=1./255)
 
-input_shape = (128, 128, 3)
 train_generator = train_datagen.flow_from_directory(train_dir, target_size=(150, 150), batch_size=10)
-val_generator = test_datagen.flow_from_directory(val_dir, shuffle=True, target_size=(150, 150), batch_size=10)
+val_generator = val_datagen.flow_from_directory(val_dir, shuffle=True, target_size=(150, 150), batch_size=10)
 test_generator = test_datagen.flow_from_directory(test_dir, shuffle=True, target_size=(150, 150), batch_size=10)
 
 model = keras.Sequential([
@@ -82,7 +82,6 @@ hist = model.fit(train_generator, steps_per_epoch=10, epochs=50, validation_data
 
 model.save("model.h5")
 
-st.pyplot(plt)
 
 def process_and_predict(file):
     im = file
@@ -114,6 +113,8 @@ def process_and_predict(file):
         prediction = 'Golden'
     if maxnum == 1:
         prediction = 'Husky'
+    if maxnum != 0 and maxnum != 1:
+        prediction ='Other'
     st.write(' is a ' + prediction)
 
     st.image(im, caption=prediction, use_column_width=True)
