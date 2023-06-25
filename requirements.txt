@@ -1,0 +1,10 @@
+opencv-contrib-python
+glob2
+pandas
+numpy
+tensorflow
+matplotlib
+keras
+pillow
+streamlit
+opencv-python
